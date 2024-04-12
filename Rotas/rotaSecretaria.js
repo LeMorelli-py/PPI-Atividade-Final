@@ -4,7 +4,7 @@
 //            domínio da aplicação   endpoint 
 
 import { Router } from 'express';
-import secretariaCtrl from './../Controles/secretariaCtrl.js';
+import secretariaCtrl from '../Controles/secretariaCtrl.js';
 
 const rotaSecretaria = new Router();
 const secCtrl = new secretariaCtrl();

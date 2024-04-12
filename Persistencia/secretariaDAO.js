@@ -1,5 +1,6 @@
 import conectar from "./conexao.js";
 import Secretarias from "../Modelos/secretaria.js";//DAO - Data Access Object
+
 export default class secretariaDAO{
     async gravar(secretaria){
         if (secretaria instanceof Secretarias){

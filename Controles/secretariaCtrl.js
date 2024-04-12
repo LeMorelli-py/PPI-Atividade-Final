@@ -29,7 +29,7 @@ export default class SecretariaCtrl{
             //pseudo validação nos dados
             if (setor && nome_secretaria && titular && cpf){
                 const secretaria = new Secretarias(0, setor, nome_secretaria, titular, cpf);
-                console.log("Gravando a secretaria " + secretaria.nome_secretaria);
+                console.log("Gravando a secretaria " + secretaria.nome_secretaria + " no banco de dados");
                 secretaria.gravar().then(()=>{
                     resposta.status(201);
                     resposta.json({
