@@ -2,13 +2,11 @@ import express from 'express';
 import process from 'process';
 import path from 'path';
 import session from 'express-session';
-import { error } from 'console';
 import rotaSecretaria from './Rotas/rotaSecretaria.js';
 import autenticar from './segurança/autenticar.js';
-import Secretarias from './Modelos/secretaria.js';
 
 const host='0.0.0.0'; 
-const porta = 4000;  
+const porta = 3000;  
 const app = express();
 
 app.use(express.json());
@@ -52,20 +50,4 @@ app.use(express.urlencoded({extended: true}));
 
 app.listen(porta, host, ()=>{
     console.log(`Servidor escutando em http://${host}:${porta}`);
-})
-/*
-const secretaria = new Secretarias(0);
-secretaria.setor = 'Sao Paulo';
-secretaria.nome_secretaria = 'Mario da Souza';
-secretaria.titular = 'Mario da Souza';
-secretaria.cpf = '148.111.255-35';
-
-    
-
-
-
-secretaria.gravar().then(() => {
-console.log('Cliente Cadastrado com sucesso');
-}).catch((erro) => {
-console.log(erro.message);
-});*/
+});

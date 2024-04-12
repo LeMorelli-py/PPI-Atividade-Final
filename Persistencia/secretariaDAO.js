@@ -14,12 +14,13 @@ export default class secretariaDAO{
             ];
             const [resultados, campos] = await conexao.execute(sql,parametros);
             //funcionalidade interessante oferecida pela biblioteca mysql2
-            secretaria.codigo = resultados.insertId; //recupera o id gerado pelo banco de dados
+            secretaria.id = resultados.insertId; //recupera o id gerado pelo banco de dados
+            return secretaria;
         }
     }
 
     async atualizar(secretaria){
-        if (secretaria instanceof Clientes){
+        if (secretaria instanceof Secretarias){
             const conexao = await conectar();
             const sql = `UPDATE secretaria SET setor = ?, nome_secretaria = ?,
                          titular = ?, cpf = ? WHERE id = ?`;
@@ -38,7 +39,7 @@ export default class secretariaDAO{
     async excluir(secretaria){
         if (secretaria instanceof Secretarias){
             const conexao = await conectar();
-            const sql = `DELETE FROM secretaria WHERE cpf = ?`;
+            const sql = `DELETE FROM secretaria WHERE titular = ?`;
             const parametros = [
                 secretaria.cpf
             ]
@@ -46,7 +47,7 @@ export default class secretariaDAO{
         }
     }
 
-    //termo de pesquisa pode ser o código do cliente ou ainda o nome
+    //termo de pesquisa pode ser o código da secretaria ou ainda o nome
     
     async consultar(termoDePesquisa){
         if (termoDePesquisa === undefined){
@@ -54,7 +55,7 @@ export default class secretariaDAO{
         }
         let sql="";
         if (isNaN(termoDePesquisa)){ //termo de pesquina não é um número
-            sql = `SELECT * FROM secretaria WHERE nome LIKE ?`;
+            sql = `SELECT * FROM secretaria WHERE titular LIKE ?`;
             termoDePesquisa= '%' + termoDePesquisa + '%';
         }
         else{

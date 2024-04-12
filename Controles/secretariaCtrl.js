@@ -1,5 +1,4 @@
 import Secretarias from "../Modelos/secretaria.js";
-import secretariaDAO from "../Persistencia/secretariaDAO.js";
 export default class SecretariaCtrl{
 
 
@@ -30,13 +29,13 @@ export default class SecretariaCtrl{
             //pseudo validação nos dados
             if (setor && nome_secretaria && titular && cpf){
                 const secretaria = new Secretarias(0, setor, nome_secretaria, titular, cpf);
-                console.log("Gravando o secretaria " + secretaria.nome_secretaria);
+                console.log("Gravando a secretaria " + secretaria.nome_secretaria);
                 secretaria.gravar().then(()=>{
                     resposta.status(201);
                     resposta.json({
                         "status":true,
                         "mensagem": "secretaria gravada com sucesso!",
-                        "codigo_secretaria": secretaria.codigo
+                        "codigo_secretaria": secretaria.id
                     });
                 }).catch((erro) =>{
                     resposta.status(500);
