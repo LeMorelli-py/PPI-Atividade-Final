@@ -1,32 +1,16 @@
 import Secretarias from "../Modelos/secretaria.js";
-export default class SecretariaCtrl{
-
-
-    //Esta Classe terá a responsabilidade de traduzir pedidos HTTP em 
-    //comandos internos da aplicação
-    //A nossa aplicação sabe gravar, atualizar, excluir e consultar clientes 
-    //no banco de dados
-
-    //Será necessário manipular requisições HTTP
-    //Requisições HTTP (GET, POST, PUT ou PATCH, DELETE)
-
-    //Camada de controle será síncrona, então iremos resolver os métodos assíncronos (promises)
+import conectar from "../Persistencia/conexao.js";
+export default class SecretariaCtrl {
 
     gravar(requisicao, resposta){
-
-        //prepar o método gravar para produzir respostas no formato JSON
         resposta.type('application/json');
-
-        //HTTP gravar um cliente é enviar uma requisição do tipo POST
-        //trazendo dados no formato JSON
         if(requisicao.method === "POST" && requisicao.is('application/json')){
-            const dados = requisicao.body; //extrair dados do corpo da requisição
+            const dados = requisicao.body; 
             const setor = dados.setor;
             const nome_secretaria = dados.nome_secretaria;
             const titular = dados.titular;
             const cpf = dados.cpf;
 
-            //pseudo validação nos dados
             if (setor && nome_secretaria && titular && cpf){
                 const secretaria = new Secretarias(0, setor, nome_secretaria, titular, cpf);
                 console.log("Gravando a secretaria " + secretaria.nome_secretaria + " no banco de dados");
@@ -35,7 +19,7 @@ export default class SecretariaCtrl{
                     resposta.json({
                         "status":true,
                         "mensagem": "secretaria gravada com sucesso!",
-                        "codigo_secretaria": secretaria.id
+                        "id_secretaria": secretaria.id
                     });
                 }).catch((erro) =>{
                     resposta.status(500);
@@ -65,16 +49,15 @@ export default class SecretariaCtrl{
     atualizar(requisicao, resposta){
         resposta.type('application/json');
         if ((requisicao.method === "PATCH" || requisicao.method === "PUT") && requisicao.is('application/json')){
-            const dados = requisicao.body; //extrair dados do corpo da requisição
-            //o código será extraído da url, exemplo: http://localhost:3000/secretaria/1  1 é o código
-            const codigo = requisicao.params.codigo;
+            const dados = requisicao.body; 
+            const id = requisicao.params.id;
             const setor = dados.setor;
             const nome_secretaria = dados.nome_secretaria;
             const titular = dados.titular;
             const cpf = dados.cpf;
-            if (codigo && codigo > 0 && setor && nome_secretaria && titular && cpf)
+            if (id && id > 0 && setor && nome_secretaria && titular && cpf)
             {
-                const secretaria = new Secretarias(codigo, setor,  nome_secretaria,  titular,  cpf);
+                const secretaria = new Secretarias(id, setor,  nome_secretaria,  titular,  cpf);
                 secretaria.atualizar()
                 .then(()=>{
                     resposta.status(200);
@@ -111,10 +94,9 @@ export default class SecretariaCtrl{
     excluir(requisicao, resposta){
         resposta.type('application/json');
         if (requisicao.method === "DELETE"){
-            //o código do secretaria que será excluído será extraído da url
-            const codigo = requisicao.params.codigo;
-            if (codigo && codigo > 0){
-                const secretaria = new Secretarias(codigo);
+            const id = requisicao.params.id;
+            if (id && id > 0){
+                const secretaria = new Secretarias(id);
                 secretaria.excluir()
                 .then(()=>{
                     resposta.status(200);
@@ -131,7 +113,7 @@ export default class SecretariaCtrl{
                     })
                 })
             }
-            else{
+            else {
                 resposta.status(400);
                 resposta.json({
                     "status":false,
@@ -139,7 +121,7 @@ export default class SecretariaCtrl{
                 })
             }
         }
-        else{
+        else {
             resposta.status(405);
             resposta.json({
                 "status":false,
@@ -148,12 +130,12 @@ export default class SecretariaCtrl{
         }
     }
 
-    consultar(requisicao, resposta){
+    async consultar(requisicao, resposta){
         resposta.type('application/json');
         if (requisicao.method === "GET"){
             const termoDePesquisa = requisicao.params.termo;
-            const secretaria = new Secretarias(0);
-            secretaria.consultar(termoDePesquisa)
+            const secretaria = new Secretarias(0, "", "", "", "");
+            await secretaria.consultar(termoDePesquisa)
             .then((secretaria)=>{
                 resposta.status(200);
                 resposta.json(secretaria);
@@ -174,5 +156,6 @@ export default class SecretariaCtrl{
             })
         }
     }
+    
 
 }

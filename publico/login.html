@@ -4,69 +4,75 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>Log in - GabiNET</title>
 
-    <!-- CSS FILES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="css/bootstrap-icons.css" rel="stylesheet">
-
-    <link href="css/templatemo-festava-live.css" rel="stylesheet">
-   
-
+<!--==================================== CSS ========================================================-->
+<link rel="icon" type="image/png" href="images/favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--================================================================================================-->
 
 </head>
-
 <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-          <div class="card border-0 shadow rounded-3 my-5">
-            <div class="card-body p-4 p-sm-5">
-              <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-              <form method="post" action = "\login" novalidate >
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="validationCustom01" name="usuario" placeholder="seu nome" required>
-                  <label for="floatingInput">Nome</label>
-                </div>
-                <div class="invalid-feedback">
-                  Por favor, informe o nome do usuário!
-              </div>
-                <div class="form-floating mb-3">
-                  <input type="password" class="form-control" id="validationCustomUserName" name="senha" aria-describedby="inputGroupPrepend" placeholder="Senha" required>
-                  <label  for="floatingPassword">Senha</label>
-                </div>
-  
-                <div class="invalid-feedback">
-                  Por favor, informe a senha!
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-primary btn-login text-uppercase fw-bold"  type="submit">Sign
-                    in</button>
-                </div>
-                <hr class="my-4">
-                <div class="d-grid mb-2">
-                  
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="limiter">
+	<div class="container-login100">
+		<div class="wrap-login100">
+			<form method="post" action = "\login" novalidate class="login100-form validate-form" id="formLogin">
+				<span class="login100-form-title p-b-26">
+					Bem-Vindo
+				</span>
+				<span class="login100-form-title p-b-48">
+					<img src="images/gabinet.jpg"></span>
+
+				<div class="wrap-input100 validate-input">
+					<input class="input100" type="text" id="validationCustom01"  name="usuario">
+					<span class="focus-input100" data-placeholder="Usuário"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Enter password">
+					<span class="btn-show-pass">
+						<i class="zmdi zmdi-eye"></i>
+					</span>
+					<input class="input100" type="password" name="senha" id="validationCustomUserName">
+					<span class="focus-input100" data-placeholder="Senha"></span>
+				</div>
+
+				<div class="container-login100-form-btn">
+					<div class="wrap-login100-form-btn">
+						<div class="login100-form-bgbtn"></div>
+						<button class="login100-form-btn" type="submit">Entrar</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--================================ SCRIPTS =============================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendor/select2/select2.min.js"></script>
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<script src="js/main.js"></script>
     <script src="../index.js"></script>
     <script src="../segurança/autenticar.js"></script>
     <script src="../Rotas/rotaSecretaria.js"></script>
+	<script src="./scripts/loginScript.js"></script>
+<!--=============================================================================================-->
 </body>
-
 </html>

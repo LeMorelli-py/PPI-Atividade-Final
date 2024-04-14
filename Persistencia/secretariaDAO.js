@@ -1,72 +1,78 @@
 import conectar from "./conexao.js";
-import Secretarias from "../Modelos/secretaria.js";//DAO - Data Access Object
+import Secretarias from "../Modelos/secretaria.js"; 
 
-export default class secretariaDAO{
-    async gravar(secretaria){
-        if (secretaria instanceof Secretarias){
-            const conexao = await conectar();
-            const sql = `INSERT INTO secretaria (setor, nome_secretaria, titular, cpf) 
-                         values (?, ?, ?, ?)`;
-            const parametros = [
-                secretaria.setor,
-                secretaria.nome_secretaria,
-                secretaria.titular,
-                secretaria.cpf
-            ];
-            const [resultados, campos] = await conexao.execute(sql,parametros);
-            //funcionalidade interessante oferecida pela biblioteca mysql2
-            secretaria.id = resultados.insertId; //recupera o id gerado pelo banco de dados
-            return secretaria;
-        }
+export default class secretariaDAO {
+  async gravar(secretaria) {
+    if (secretaria instanceof Secretarias) {
+      const conexao = await conectar();
+      const sql = `INSERT INTO secretaria (setor, nome_secretaria, titular, cpf) 
+                   VALUES (?, ?, ?, ?)`;
+      const parametros = [
+        secretaria.setor,
+        secretaria.nome_secretaria,
+        secretaria.titular,
+        secretaria.cpf,
+      ];
+      const resultados = await conexao.execute(sql, parametros);
+      secretaria.id = resultados.insertId;     }
+  }
+
+     async atualizar(secretaria) {
+  if (secretaria instanceof Secretarias) {
+    try {
+      const conexao = await conectar();
+      const sql = `UPDATE secretaria SET setor = ?, nome_secretaria = ?,
+                   titular = ?, cpf = ? WHERE id = ?`;
+      const parametros = [
+        secretaria.setor,
+        secretaria.nome_secretaria,
+        secretaria.titular,
+        secretaria.cpf,
+        secretaria.id 
+      ];
+
+      await conexao.execute(sql, parametros);
+    } catch (error) {
+      console.error('Error updating secretaria:', error);
+          }
+  }
+}
+
+async excluir(secretaria) {
+  if (secretaria instanceof Secretarias) {
+    try {
+      const conexao = await conectar();
+      const sql = `DELETE FROM secretaria WHERE titular = ?`;
+      const parametros = [secretaria.titular];
+      await conexao.execute(sql, parametros);
+      console.log("Secretaria deleted successfully");
+    } catch (error) {
+      console.error("Error deleting secretaria:", error);
     }
+  }
+}
 
-    async atualizar(secretaria){
-        if (secretaria instanceof Secretarias){
-            const conexao = await conectar();
-            const sql = `UPDATE secretaria SET setor = ?, nome_secretaria = ?,
-                         titular = ?, cpf = ? WHERE id = ?`;
-            const parametros = [
-                secretaria.setor,
-                secretaria.nome_secretaria,
-                secretaria.titular,
-                secretaria.cpf
-            ];  
 
-           await conexao.execute(sql,parametros);
-           
-        }
-    }
-
-    async excluir(secretaria){
-        if (secretaria instanceof Secretarias){
-            const conexao = await conectar();
-            const sql = `DELETE FROM secretaria WHERE titular = ?`;
-            const parametros = [
-                secretaria.cpf
-            ]
-            await conexao.execute(sql,parametros);
-        }
-    }
-
-    //termo de pesquisa pode ser o código da secretaria ou ainda o nome
     
     async consultar(termoDePesquisa){
+        let sql = "SELECT * FROM secretaria";
+        const conexao = await conectar();
+        let parametros = [];
         if (termoDePesquisa === undefined){
             termoDePesquisa = "";
         }
-        let sql="";
-        if (isNaN(termoDePesquisa)){ //termo de pesquina não é um número
+        if (termoDePesquisa !== ''){
             sql = `SELECT * FROM secretaria WHERE titular LIKE ?`;
-            termoDePesquisa= '%' + termoDePesquisa + '%';
+            parametros = [`%${termoDePesquisa}%`];
         }
-        else{
+        else{ 
             sql = `SELECT * FROM secretaria WHERE id = ?`;
+            parametros = [termoDePesquisa];
         }
 
-        const conexao = await conectar();
-        const [registros] = await conexao.execute(sql,[termoDePesquisa]);
-        //Utilizar os registros encontrados para criar novos objetos do tipo secretaria
-        let listaSecretarias = [];
+
+        let [registros] = await conexao.execute(sql,parametros);
+        let listasecretaria = [];
         for (const registro of registros){
             const secretaria = new Secretarias(
                 registro.id,
@@ -75,8 +81,8 @@ export default class secretariaDAO{
                 registro.titular,
                 registro.cpf
             );
-            listaSecretarias.push(secretaria);
+            listasecretaria.push(secretaria);
         }
-        return listaSecretarias;
+        return listasecretaria;
     }
-}
+};
